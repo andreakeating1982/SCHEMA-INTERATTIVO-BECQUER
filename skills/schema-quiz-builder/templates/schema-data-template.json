@@ -1,0 +1,55 @@
+{
+  "appName": "Titolo dell'App (es. Analisi Rima XXI)",
+  "totalSlots": 12,
+  "allKeywords": [
+    "Keyword1",
+    "Keyword2",
+    "Keyword3",
+    "Keyword4",
+    "Keyword5",
+    "Keyword6",
+    "Keyword7",
+    "Keyword8",
+    "Keyword9",
+    "Keyword10",
+    "Keyword11",
+    "Keyword12"
+  ],
+  "schemaRows": [
+    {
+      "id": "fase1",
+      "phaseLabel": "FASE 1 — TITOLO DELLA FASE",
+      "phaseSubtitle": "Sottotitolo breve per la fase",
+      "color": "#8B1A1A",
+      "slots": ["Keyword1", "Keyword2"]
+    },
+    {
+      "id": "fase2",
+      "phaseLabel": "FASE 2 — SECONDA FASE",
+      "phaseSubtitle": "Sottotitolo",
+      "color": "#B8860B",
+      "slots": ["Keyword3", "Keyword4"]
+    },
+    {
+      "id": "fase3",
+      "phaseLabel": "FASE 3 — TERZA FASE",
+      "phaseSubtitle": "Sottotitolo",
+      "color": "#2E5E2E",
+      "slots": ["Keyword5", "Keyword6", "Keyword7"]
+    },
+    {
+      "id": "fase4",
+      "phaseLabel": "FASE 4 — QUARTA FASE",
+      "phaseSubtitle": "Sottotitolo",
+      "color": "#4A6FA5",
+      "slots": ["Keyword8", "Keyword9", "Keyword10"]
+    },
+    {
+      "id": "fase5",
+      "phaseLabel": "FASE 5 — QUINTA FASE",
+      "phaseSubtitle": "Sottotitolo",
+      "color": "#6B3FA0",
+      "slots": ["Keyword11", "Keyword12"]
+    }
+  ]
+}

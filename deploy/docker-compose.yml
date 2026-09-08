@@ -1,0 +1,50 @@
+# ============================================================
+# docker-compose.yml — SCHEMA INTERATTIVO
+# Avvia l'app con PostgreSQL in un unico comando
+# ============================================================
+#
+# Utilizzo:
+#   docker compose up -d
+#
+# L'app sarà disponibile su http://localhost:3000
+
+services:
+  # --- Database PostgreSQL ---
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: schema
+      POSTGRES_PASSWORD: schema_secret
+      POSTGRES_DB: schema_interattivo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schema -d schema_interattivo"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- Schema Interattivo App ---
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Connessione al database PostgreSQL (service "db" qui sopra)
+      DATABASE_URL: postgresql://schema:schema_secret@db:5432/schema_interattivo?sslmode=disable
+      # URL pubblico dell'app (cambia con il tuo dominio se in produzione)
+      BETTER_AUTH_URL: http://localhost:3000
+      # Chiave per crittografia delle sessioni (cambiala con una sicura!)
+      BETTER_AUTH_SECRET: cambiami-con-una-stringa-casuale-di-almeno-32-caratteri
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

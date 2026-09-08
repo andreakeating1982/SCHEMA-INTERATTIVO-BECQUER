@@ -1,0 +1,52 @@
+{
+  "appName": "SCHEMA INTERATTIVO — RIMA XXI (BÉCQUER)",
+  "methodName": "Metodo di Fernando Lázaro Carreter",
+  "topicDescription": "Rima XXI (Bécquer) secondo il metodo Lázaro Carreter.",
+  "pdfFileBase": "RIMA_XXI",
+  "totalSlots": 12,
+  "colors": {
+    "col3": "#2D6A4F",
+    "col4": "#C2255C",
+    "col1": "#0096C7",
+    "col2": "#1A1A1A",
+    "gridBorder": "#1B3A5C",
+    "phases": ["#8B1A1A", "#B8860B", "#2E5E2E", "#4A6FA5", "#6B3FA0"]
+  },
+  "rows": [
+    {
+      "id": "fase1-2",
+      "phaseLabel": "FASE 1/2",
+      "description": "LECTURA Y / LOCALIZACIÓN",
+      "col3": ["Romanticismo"],
+      "col4": ["Rimas"]
+    },
+    {
+      "id": "fase3",
+      "phaseLabel": "FASE 3",
+      "description": "TEMA",
+      "col3": ["poesía"],
+      "col4": ["persona amada"]
+    },
+    {
+      "id": "fase4",
+      "phaseLabel": "FASE 4",
+      "description": "ESTRUCTURA",
+      "col3": ["endecasílabos"],
+      "col4": ["heptasílabo"]
+    },
+    {
+      "id": "fase5",
+      "phaseLabel": "FASE 5",
+      "description": "ANÁLISIS DE / LA FORMA",
+      "col3": ["diálogo", "apóstrofe"],
+      "col4": ["anáfora", "identificación"]
+    },
+    {
+      "id": "fase6-7",
+      "phaseLabel": "FASE 6/7",
+      "description": "REDACCIÓN Y / CONCLUSIÓN",
+      "col3": ["relación"],
+      "col4": ["sencillez"]
+    }
+  ]
+}
