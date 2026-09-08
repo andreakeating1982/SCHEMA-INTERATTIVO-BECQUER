@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { generateReportPdf, generateBlankQuestionsPdf, generateCompletedSchemaPdf } from "@/lib/reportPdf";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SCHEMA_ROWS, GRID_SLOTS, TOTAL_SLOTS, getCorrectAnswer } from "../../../server/schema-data";
 
 export default function TeacherPage() {
@@ -382,73 +383,52 @@ export default function TeacherPage() {
                             // Badge IN ATTESA DI INVIO: centra il gruppo di elementi (nome+badge+pallini+X) invece di spingerli ai bordi
                             const isPendingInvio = studentAnswers.length < TOTAL_SLOTS;
                             return (
-                              <div key={student.id} className="rounded-xl border border-border/50">
-                                  <button
-                                    onClick={() => setExpandedStudent(isExpanded ? null : student.id)}
-                                    className={`w-full flex flex-wrap items-center gap-2.5 px-4 py-2.5 bg-muted/30 hover:bg-muted/60 transition-colors text-center relative overflow-visible ${isPendingInvio ? 'justify-center' : ''}`}
-                                  >
-                                    <div className="size-2 rounded-full shrink-0 bg-gray-300"></div>
-                                    <div className={`min-w-0 ${isPendingInvio ? 'flex-none' : 'flex-1'}`}>
-                                      {/* Tooltip nero sul NOME: gruppo hover sul nome (come repo Quiz-interattivo-con-audio-sorgente), tap su mobile */}
-                                      <span
-                                        className="group relative block w-full cursor-pointer"
-                                        onClick={(e) => {
-                                          // Su dispositivi touch (niente hover): tap = mostra/nasconde il nome completo
-                                          if (window.matchMedia('(hover: none)').matches) {
-                                            e.stopPropagation();
-                                            setTooltipStudent(tooltipStudent === student.id ? null : student.id);
-                                          }
-                                        }}
-                                      >
-                                        <span className="block font-bold text-sm text-foreground truncate text-center uppercase">{student.name}</span>
-                                        {/* Tooltip nero: SOLO il nome — hover sul nome (gruppo), tap su mobile (stato) */}
-                                        <span
-                                          ref={tooltipRef}
-                                          className={`pointer-events-none absolute left-1/2 top-full z-[100] mt-2 -translate-x-1/2 max-w-[85vw] rounded-lg bg-[#2C221E] px-3 py-2 text-white shadow-2xl transition-opacity duration-150 ${tooltipStudent === student.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                                        >
-                                          <span className="block whitespace-nowrap uppercase font-bold text-xs">{student.name}</span>
-                                          {/* Freccia in ALTO verso il nome: bottom-full + border-b -> la punta punta ESATTAMENTE al nome (come da foto) */}
-                                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 size-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-[#2C221E]" />
-                                        </span>
-                                      </span>
-                                    </div>
-                                    <div className={`text-sm font-bold shrink-0 ${studentAnswers.length < TOTAL_SLOTS ? 'text-amber-600' : correctAnswers > 0 ? scoreColor(correctAnswers) : 'text-muted-foreground'}`}>
-                                      {studentAnswers.length >= TOTAL_SLOTS ? correctAnswers + '/' + (totalSlots || '12') : <span className="whitespace-nowrap text-[10px] uppercase tracking-wider font-semibold">IN ATTESA DI INVIO</span>}
-                                    </div>
-                                    <div className="flex items-center gap-1 shrink-0 mr-2">
-                                      {SCHEMA_ROWS.map((phase: any) => {
-                                        const hasAnswer = answeredPhaseIds.has(phase.id);
-                                        return (
-                                          <div
-                                            key={phase.id}
-                                            className="size-3 rounded-full shrink-0"
-                                            style={{
-                                              backgroundColor: 'transparent',
-                                              border: hasAnswer ? `2px solid ${phase.color}` : `1.5px solid ${phase.color}`,
-                                            }}
-                                            title={phase.phaseLabel + (hasAnswer ? ' ✓' : '')}
-                                          />
-                                        );
-                                      })}
-                                    </div>
-                                    {/* span role=button: EVITA button annidato dentro button (HTML invalido -> hydration error) */}
-                                    {/* Tooltip RIMUOVI STUDENTE = tooltip NATIVO del browser via title, come repo Parole-chiave-interattive-sorgente (NON nero) */}
+                              <div key={student.id} className="rounded-xl border border-border/50 bg-muted/10">
+                                <button onClick={() => setExpandedStudent(isExpanded ? null : student.id)} className={`w-full flex items-center gap-2 sm:gap-3 px-3 py-2.5 sm:px-4 hover:bg-muted/30 transition-colors text-left ${isExpanded && studentAnswers.length > 0 ? 'rounded-t-xl' : 'rounded-xl'}`}>
+                                  <div className="size-2.5 rounded-full shrink-0 bg-gray-300"></div>
+                                  <div className="flex-1 min-w-0">
                                     <span
-                                      role="button"
-                                      tabIndex={-1}
-                                      aria-label="Rimuovi lo studente"
-                                      title="Rimuovi lo studente"
-                                      onClick={(e) => { e.stopPropagation(); removeStudentMutation.mutate({ studentId: student.id }); }}
-                                      className={`inline-flex size-4 items-center justify-center rounded-full border border-red-500 text-red-500 hover:bg-red-50 shrink-0 cursor-pointer ${removeStudentMutation.isPending ? 'opacity-50 pointer-events-none' : ''}`}
+                                      className="group relative block min-w-0 font-semibold text-sm text-foreground text-left cursor-pointer"
+                                      onClick={(e: any) => {
+                                        if (window.matchMedia('(hover: none)').matches) {
+                                          e.stopPropagation();
+                                          setTooltipStudent(tooltipStudent === student.id ? null : student.id);
+                                        }
+                                      }}
                                     >
-                                      <X className="size-2.5" strokeWidth={3} />
+                                      <span className="block truncate uppercase">{student.name}</span>
+                                      <span className={`pointer-events-none absolute left-1/2 bottom-full z-[100] mb-2 -translate-x-1/2 max-w-[85vw] rounded-md bg-black px-3 py-1.5 text-xs text-white uppercase shadow-lg transition-opacity duration-150 ${tooltipStudent === student.id ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-active:opacity-100 group-focus:opacity-100"}`}>
+                                        {student.name}
+                                      </span>
                                     </span>
+                                  </div>
+                                  <div className={`text-[10px] sm:text-xs font-bold shrink-0 text-center leading-tight max-w-[70px] ${studentAnswers.length < TOTAL_SLOTS ? 'text-orange-500' : correctAnswers > 0 ? scoreColor(correctAnswers) : 'text-muted-foreground'}`}>
+                                    {studentAnswers.length >= TOTAL_SLOTS ? correctAnswers + '/' + (totalSlots || '12') : 'IN ATTESA DI INVIO'}
+                                  </div>
+                                  <div className="hidden lg:flex items-center gap-1.5 shrink-0">
+                                    {SCHEMA_ROWS.map((phase: any) => {
+                                      const hasAnswer = answeredPhaseIds.has(phase.id);
+                                      return (
+                                        <Tooltip key={phase.id}>
+                                          <TooltipTrigger asChild>
+                                            <div className={`size-2.5 rounded-full cursor-default ${hasAnswer ? '' : 'border-2'}`} style={hasAnswer ? { backgroundColor: phase.color } : { borderColor: phase.color, backgroundColor: 'transparent' }}></div>
+                                          </TooltipTrigger>
+                                          <TooltipContent side="top" className="px-3 py-1.5">
+                                            <p className="text-[10px] font-bold uppercase">{phase.phaseLabel}: {hasAnswer ? 'inviata' : 'IN ATTESA DI INVIO'}</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      );
+                                    })}
+                                  </div>
+                                  <div className="flex items-center gap-0.5 shrink-0 ml-1">
+                                    <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); removeStudentMutation.mutate({ studentId: student.id }); }} disabled={removeStudentMutation.isPending} className="text-red-500 hover:text-red-700 hover:bg-red-100 px-1.5 h-7 rounded-full" title="Rimuovi studente"><XCircle className="size-4" /></Button>
                                     {studentAnswers.length > 0 && (
-                                      <div className="text-muted-foreground shrink-0">
+                                      <div className="text-muted-foreground">
                                         {isExpanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
                                       </div>
                                     )}
-                                  </button>
+                                  </div>
+                                </button>
                                 {isExpanded && studentAnswers.length > 0 && (
                                   <AnswerDetails studentAnswers={studentAnswers} />
                                 )}
