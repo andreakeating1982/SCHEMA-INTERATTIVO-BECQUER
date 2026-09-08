@@ -577,14 +577,14 @@ function AnswerDetails({ studentAnswers }: { studentAnswers: any[] }) {
   }, [studentAnswers, slotDetails]);
 
   return (
-    <div className="border-t border-border/50 bg-muted/10 p-3 space-y-1.5">
+    <div className="border-t border-border/40 bg-muted/15 p-4 space-y-4 rounded-b-xl">
       {answersByPhase.map(([phase, answers]: [string, any[]]) => {
         const phaseColor = answers[0]?.rowColor || '#6B7280';
         return (
-          <div key={phase} className="space-y-0.5">
+          <div key={phase} className="space-y-1.5">
             <p
-              className="text-[11px] font-bold uppercase tracking-wider px-2 pt-1 text-center"
-              style={{ color: phaseColor, fontFamily: "OpenDyslexic, Cambria, Georgia, 'Times New Roman', serif" }}
+              className="text-[10px] font-bold uppercase tracking-wider text-center"
+              style={{ color: phaseColor }}
             >
               {phase}
             </p>
@@ -593,26 +593,23 @@ function AnswerDetails({ studentAnswers }: { studentAnswers: any[] }) {
               .map((answer: any) => {
                 const word = answer.selectedKeyword || answer.selectedAnswer || '—';
                 return (
-                  <div key={answer.id} className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 px-2 py-1.5 rounded-md bg-white border border-gray-200/80 min-w-0">
-                    <span className="text-muted-foreground font-mono text-[9px] w-3 shrink-0">#</span>
+                  <div key={answer.id} className="flex items-start gap-2 px-3 py-2 rounded-lg bg-white/70 border border-border/30">
+                    <span className="text-muted-foreground font-mono text-[11px] w-5 shrink-0 leading-4">#</span>
                     {answer.isCorrect ? (
-                      <span className="size-3.5 rounded-full border-2 border-green-600 flex items-center justify-center shrink-0">
-                          <Check className="size-2 text-green-600" strokeWidth={3} />
-                        </span>
+                      <CheckCircle2 className="size-4 text-green-600 shrink-0 mt-0.5" />
                     ) : (
-                      <span className="size-3.5 rounded-full border-2 border-red-500 flex items-center justify-center shrink-0">
-                          <X className="size-2 text-red-500" strokeWidth={3} />
+                      <XCircle className="size-4 text-red-500 shrink-0 mt-0.5" />
+                    )}
+                    <div className="flex-1 min-w-0 space-y-0.5">
+                      <span className={`block text-xs font-medium break-words uppercase ${answer.isCorrect ? 'text-green-700' : 'text-red-600'}`} title={word}>
+                        {word}
+                      </span>
+                      {!answer.isCorrect && (
+                        <span className="block text-xs font-medium text-green-700 break-words uppercase" title={answer.correctAnswer}>
+                          <span className="text-muted-foreground mr-1">→</span>{answer.correctAnswer}
                         </span>
-                    )}
-                    <span className={`text-xs uppercase leading-snug min-w-0 [overflow-wrap:anywhere] ${answer.isCorrect ? 'text-green-700' : 'text-red-700'}`}>
-                      {word}
-                    </span>
-                    {!answer.isCorrect && (
-                      <>
-                        <span className="text-[10px] text-gray-400 shrink-0">→</span>
-                        <span className="text-xs uppercase leading-snug min-w-0 [overflow-wrap:anywhere] text-green-600">{answer.correctAnswer}</span>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
                 );
               })}
